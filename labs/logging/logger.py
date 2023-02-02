@@ -20,4 +20,5 @@ def dump(log_file=log_file):
     # open up the log file in the correct mode.
     # read the file into a list.
     # iterate through each item in the list and print out the results.
+    # close the file.
     return None
