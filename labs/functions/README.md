@@ -1,6 +1,6 @@
 # Lab 4 - Functions and Typing
 
-> description
+Functions are a way to reduce code duplication, increase program modularity, and make it easier to debug and fix errors. The goal of this lab is get you comfortable with defining and invoking functions as well as a little bit of problem solving.
 
 ## Step 1 - Setup
 
