@@ -26,7 +26,8 @@ Now ensure that your Python3 virtual environment is activated.
     # when cd'd into the root folder of your repository.
     .\venv\Scripts\activate.bat
    ```
-   And once it is activated; run the following command to actually install `flask` onto your python virtual environment.
+
+Next, we're now going to check to see if Flask is actually installed.
 
 ```sh
 # check that it is installed properly by running the following command.
@@ -34,6 +35,8 @@ flask --version
 ```
 
 If the command works skip onto step 3. If the command failed the next step is to install Flask. 
+
+---
 
 Add the following lines to your `requirements.txt` file in your root folder of your repositories.
 
