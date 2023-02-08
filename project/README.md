@@ -22,10 +22,10 @@ Now ensure that your Python3 virtual environment is activated.
    ```
 
 2. For Windows
-   `sh
+   ```sh
     # when cd'd into the root folder of your repository.
     .\venv\Scripts\activate.bat
-    `
+   ```
    And once it is activated; run the following command to actually install `flask` onto your python virtual environment.
 
 ```sh
