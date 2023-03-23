@@ -190,9 +190,9 @@ from flask import *
 from movies import movies
 ```
 
-### Adding a new app route
+### Step 1: Adding a new app route
 
-Now we have to create a new REST endpoint to access these movies. Copy the following code below and paste it below your `hello_world` function.
+Now we have to create a new REST endpoint to access these movies. We are going to be doing some exercises with the HTTP method "GET". The GET method is used when you want to let a server know that you want it to response with some specified data that is stored on it. Please copy the following code below and paste it below your `hello_world` function.
 
 ```py
 @app.route("/api/movies", methods=["GET"])
@@ -204,7 +204,7 @@ def list_movies():
     return jsonify(movies)
 ```
 
-I want you to activate your Python virtual environment and then run your `main.py` file. Once again you should see some text like the following:
+In the code above, we see a function called `list_movies()` with some weird stuff above it. This is known as an __annotation__. Annotations are a sort of arbitrary marker that exist to notify interpreters, linters, IDEs, etc. about something specific to it. In the case of `flask`, it is notifying the framework that the following function should be invoked when the URL is accessed with a http GET request. I want you to activate your Python virtual environment and then run your `main.py` file. Once again you should see some text like the following:
 
 ```txt
  * Serving Flask app 'main'
@@ -216,11 +216,11 @@ Press CTRL+C to quit
 
 I want you to now access the following web page and take a screenshot http://127.0.0.1:5000/api/movies. You should now see a json/dict representation of all of our movie and review data!
 
-### Filtering our movie data
+### Step 2: Filtering our movie data
 
 So what if want to filter our movie data by certain attributes? Well we can use something called "query parameters" in our URL with the syntax of `{url}?{key}={value}`. So if we want to look at only reviews of the movie "Frozen" we would just go to the URL http://127.0.0.1:5000/api/movies?title=Frozen. Currently if we access that URL we still see all of the movies so let us change that.
 
-### Using query parameters
+### Step 3: Using query parameters
 
 In order to use query parameters we will need to use the `request` object in the `flask` framework. We can access the query parameters in a URI like so:
 
@@ -254,7 +254,7 @@ def list_movies():
 
 Once this is working, please access http://127.0.0.1:5000?title=Frozen and take a screenshot.
 
-### Applying multiple query parameters
+### Step 4: Applying multiple query parameters
 
 So what about if we want to filter by multiple movies? You can apply multiple filters by separating your query parameters by an `&`. For example the following URI http://127.0.0.1:5000/api/movies?title=Frozen&title=Moana can now return a list of query parameters in your endpoint function. To can access them as a list using the following function: `request.args.getlist("title")`. Modify your `list_movies` function to now filter by list of titles.
 
@@ -278,7 +278,7 @@ def list_movies():
 
 Once this is working, please access http://127.0.0.1:5000?/api/movies/title=Frozen&title=Moana and take a screenshot.
 
-### Enabling unit tests
+### Step 5: Enabling unit tests
 
 In order to allow for the use of unit testing with pytest, we must encase our `app.run()` call in `main.py` in an if-statement like so:
 
@@ -289,7 +289,7 @@ if __name__ == '__main__':
 
 This is required so that when `main.py` is interpreted by the interpreter when using pytest, the app server isn't started.
 
-### Running unit tests
+### Step 6: Running unit tests
 
 Please copy the `test_main.py` file in my projects folder in github to your projects folder and then run:
 
@@ -299,7 +299,7 @@ pytest test_main.py
 
 If everything was done properly, you should get 4 passing tests.
 
-## Submitting your work
+## Step 7: Submitting your work
 
 Please upload the following:
 
