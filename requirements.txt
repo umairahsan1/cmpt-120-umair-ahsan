@@ -1,8 +1,8 @@
 # Package is a test framework used to test your homework.
-pytest==7.1.2
+pytest
 
 # Package is a tool that helps you format your code on save.
-autopep8==1.7.0
+autopep8
 
 # Package is a tool for creating REST APIs.
-flask==2.2.2
+flask

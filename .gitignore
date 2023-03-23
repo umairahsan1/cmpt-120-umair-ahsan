@@ -8,3 +8,8 @@ report.html
 # pycache folders
 __pycache__
 .pytest_cache
+
+# log files
+*.log
+
+*.pyc
