@@ -1,5 +1,5 @@
 # import the flask package for making rest apis.
-from flask import Flask
+from flask import *
 
 # create an instance of a Flask object.
 app = Flask(__name__)
@@ -12,5 +12,7 @@ def hello_world():
     '''
     return "Hello, world!"
 
+
 # run our application
-app.run()
+if __name__ == '__main__':
+    app.run()
