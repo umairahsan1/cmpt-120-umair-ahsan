@@ -16,6 +16,7 @@ The second piece of code I want you to develop is the `Student` class. This clas
 
 - `major`: a string representing the student's major.
 - `courses`: a list of the previously defined Course object.
+- `add_course`: a function that adds a new `Course` object instance to `self.courses`.
 - `change_major`: a function that reassigns the `major` property
 - `get_credits`: a function that iterates through `courses` and returns the total number of credits.
 - `get_gpa`: a function that iterates through `courses` and returns the total student's GPA. Use the following dictionary for the letter grade point scale:
