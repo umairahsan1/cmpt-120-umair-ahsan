@@ -1,16 +1,25 @@
-# import the flask package for making rest apis.
 from flask import *
 
 # create an instance of a Flask object.
 app = Flask(__name__)
 
+# our document storage.
+movies = []
+
 
 @app.route("/", methods=["GET"])
-def hello_world():
-    '''
-    This is our base route. When visited, we get the text "Hello, world!"
-    '''
-    return "Hello, world!"
+def hello_world() -> Response:
+    return Response("Hello world!", status=200)
+
+
+@app.route("/api/movies", methods=["GET", "POST"])
+def handle_movies() -> Response:
+    pass
+
+
+@app.route("/api/movies/<mid>", methods=["GET", "DELETE"])
+def handle_movie(mid: str) -> Response:
+    pass
 
 
 # run our application

@@ -204,7 +204,7 @@ def list_movies():
     return jsonify(movies)
 ```
 
-In the code above, we see a function called `list_movies()` with some weird stuff above it. This is known as an __annotation__. Annotations are a sort of arbitrary marker that exist to notify interpreters, linters, IDEs, etc. about something specific to it. In the case of `flask`, it is notifying the framework that the following function should be invoked when the URL is accessed with a http GET request. I want you to activate your Python virtual environment and then run your `main.py` file. Once again you should see some text like the following:
+In the code above, we see a function called `list_movies()` with some weird stuff above it. This is known as an **annotation**. Annotations are a sort of arbitrary marker that exist to notify interpreters, linters, IDEs, etc. about something specific to it. In the case of `flask`, it is notifying the framework that the following function should be invoked when the URL is accessed with a http GET request. I want you to activate your Python virtual environment and then run your `main.py` file. Once again you should see some text like the following:
 
 ```txt
  * Serving Flask app 'main'
@@ -307,3 +307,135 @@ Please upload the following:
 - Screen shot of http://127.0.0.1:5000/api/movies?title=Frozen
 - Screen shot of http://127.0.0.1:5000/api/movies?title=Frozen&title=Moana
 - Screen shot of the output of `pytest` command with passing test cases.
+
+# Assignment 3 - Completing CRUD Model
+
+So currently we have the ability to retrieve all movies in our collection and apply filters on the list. Now we need to handle the ability to create, update, and delete movies as well as their subsequent reviews.
+
+## Step 1: Setup
+
+At the top of your file, I want you to import the `uuid` library.
+
+```py
+import uuid
+```
+
+Delete the `movies.py` file that currently contains the test movie data and remove the import from the top of `main.py`. Add the following line **_BELOW_** your app variable initialization.
+
+```py
+movies = []
+```
+
+Download Postman from https://www.postman.com/; this is the tool we used in class to issue requests against our REST server. In order to use this tool you must sign up with an account. Use the APIs tab on the left. When sending requests that contain a request body you must add the correct headers. Under the "Headers" tab for your request add the following:
+
+| Key          | Value            |
+| ------------ | ---------------- |
+| Content-Type | application/json |
+
+In order to add your actual request body; under the body tab, select the `raw` radio button and add your dictionary data there.
+
+## Step 2: GET and POST
+
+Let us rename our `list_movies` function to something more appropriate since we are going to be doing more than just listing movies with the function. Let is rename it to `handle_movies`. Let us update our annotation to now include the `POST` method. So your function identifier should now look like:
+
+```py
+@app.route("/api/movies", methods=["GET", "POST"])
+def handle_movies():
+    # GET & POST method logic
+```
+
+Now you need to separate your HTTP GET method logic from your HTTP POST method logic. You can do that by accessing what type of request was made using the `request` library like so:
+
+```py
+if request.method == "GET":
+    # previous GET logic
+elif request.method == "POST":
+    # new POST logic
+```
+
+So under the if-statement checking if it is a GET request; you can just use the list movies logic you previously had. Under the POST request, I want you to retrieve the request body by using the `request.get_json()` function. This will return the HTTP request body as a python dictionary.
+
+```py
+request_body = request.get_json()
+```
+
+I want you to check for the following error cases:
+
+1. If the request body is `None` or the `title` field in the request body is `null` or in Python `None`; return a `Response("Bad request", 400)`.
+2. If the title in the request body matches a movie that already exists in our collection; return a `Response("Already exists.", 409)`.
+
+Once you get past these two error cases. I want you to create a new dictionary object that has a **uuid** field, a **title** field, and a **reviews** field. The uuid you can get from calling `uuid.uuid4()`.
+
+_Make sure you convert the uuid to a string!_
+
+The title you must get from the request body, and the reviews field must be an empty list. Finally, append the dictionary to `movies` and return a `Response("Created", 201)` back to the client.
+
+## Step 3: GET and DELETE by ID
+
+Create a new function called `handle_movie`, not to be confused with our other function `handle_movies`, and annotate it like so:
+
+```py
+@app.route("/api/movies/<mid>", methods=["GET", "DELETE"])
+def handle_movie(mid: str) -> Response:
+    if request.method == "GET":
+        # GET logic
+    elif request.method == "DELETE":
+        # DELETE logic
+```
+
+This route is different than the previous one because this one makes use of what is known as a **path parameter**; a parameter passed into the URL path. This value will _always_ be a string so handle it accordingly. Iterate through the list of movies and once you found a movie that has a matching `uuid` as the `mid` path parameter; jsonify and return it back to the client (much like we did in assignment 1):
+
+```py
+# ... handle errors.
+# ... find movie
+
+return jsonify(movie)
+```
+
+Once this is working I want you to move onto the DELETE logic. To get this working, instead of jsonifying and returning the movie dictionary, I want you to instead remove it from `movies`. After you remove it; return a `Response("No content", 204)`.
+
+```py
+# ... handle errors.
+# ... find and delete movie
+
+return Response("No content", 204)
+```
+
+I want you to check for the following error cases:
+
+1. If no movie matches the `mid`; return a `Response("Not found", 404)`.
+
+## Step 4: Testing your code
+
+Delete all of the code in your `test_main.py` file and copy everything in my version on Github into your file. This has more test cases that cover more use cases and error scenarios I outlined earlier in the assignment.
+
+1. Start your server.
+2. Using Postman, issue a GET request to http://127.0.0.1:5000/api/movies, you should get a `200 OK` and an empty list in the response.
+3. Using Postman, issue a POST request to http://127.0.0.1:5000/api/movies with no request body. You should get a `400 BAD REQUEST`.
+4. Using Postman, issue a POST request to http://127.0.0.1:5000/api/movies with the following request body:
+   ```json
+   {
+     "title": null
+   }
+   ```
+   You should get a `400 BAD REQUEST`.
+5. Using Postman, issue a POST request to http://127.0.0.1:5000/api/movies with the following request body:
+   ```json
+   {
+     "title": "Interstellar"
+   }
+   ```
+   You should get a `201 CREATED`.
+6. Using Postman, issue the same POST same request again. You should get a `409 CONFLICT`.
+7. Using Postman, issue a GET request to http://127.0.0.1:5000/api/movies?title=Interstellar, you should get a `200 OK` and the movie back. Copy the `uuid` value.
+8. Using Postman and the previously copied `uuid` value, issue a GET request to http://127.0.0.1:5000/api/movies/replace-me-with-copied-uuid, you should get a `200 OK` and the movie back.
+9. Using Postman and the previously copied `uuid` value, issue a DELETE request to http://127.0.0.1:5000/api/movies/replace-me-with-copied-uuid, you should get a `204 NO CONTENT` and nothing back.
+10. Using Postman, issue a GET request to http://127.0.0.1:5000/api/movies/abcd, you should get a `404 NOT FOUND` back.
+11. Using Postman, issue a DELETE request to http://127.0.0.1:5000/api/movies/abcd, you should get a `404 NOT FOUND` back.
+12. Kill your server.
+
+## Step 5: Submitting your work
+
+1. Ensure your python environment is activated.
+2. Run `pytest`.
+3. Once all of your project's test cases are passing, copy the output and submit it on iLearn.
