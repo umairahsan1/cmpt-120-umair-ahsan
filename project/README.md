@@ -410,28 +410,28 @@ I want you to check for the following error cases:
 Delete all of the code in your `test_main.py` file and copy everything in my version on Github into your file. This has more test cases that cover more use cases and error scenarios I outlined earlier in the assignment.
 
 1. Start your server.
-2. Using Postman, issue a GET request to http://127.0.0.1:5000/api/movies, you should get a **200 OK** and an empty list in the response.
-3. Using Postman, issue a POST request to http://127.0.0.1:5000/api/movies with no request body. You should get a **400 BAD REQUEST**.
+2. Using Postman, issue a GET request to http://127.0.0.1:5000/api/movies, you should get a `200 OK` and an empty list in the response.
+3. Using Postman, issue a POST request to http://127.0.0.1:5000/api/movies with no request body. You should get a `400 BAD REQUEST`.
 4. Using Postman, issue a POST request to http://127.0.0.1:5000/api/movies with the following request body:
    ```json
    {
      "title": null
    }
    ```
-   You should get a **400 BAD REQUEST**.
+   You should get a `400 BAD REQUEST`.
 5. Using Postman, issue a POST request to http://127.0.0.1:5000/api/movies with the following request body:
    ```json
    {
      "title": "Interstellar"
    }
    ```
-   You should get a **201 CREATED**.
-6. Using Postman, issue the same POST same request again. You should get a **409 CONFLICT**.
-7. Using Postman, issue a GET request to http://127.0.0.1:5000/api/movies?title=Interstellar, you should get a **200 OK** and the movie back. Copy the `uuid` value.
-8. Using Postman and the previously copied `uuid` value, issue a GET request to http://127.0.0.1:5000/api/movies/replace-me-with-copied-uuid, you should get a **200 OK** and the movie back.
-9. Using Postman and the previously copied `uuid` value, issue a DELETE request to http://127.0.0.1:5000/api/movies/replace-me-with-copied-uuid, you should get a **204 NO CONTENT** and nothing back.
-10. Using Postman, issue a GET request to http://127.0.0.1:5000/api/movies/abcd, you should get a **404 NOT FOUND** back.
-11. Using Postman, issue a DELETE request to http://127.0.0.1:5000/api/movies/abcd, you should get a **404 NOT FOUND** back.
+   You should get a `201 CREATED`.
+6. Using Postman, issue the same POST same request again. You should get a `409 CONFLICT`.
+7. Using Postman, issue a GET request to http://127.0.0.1:5000/api/movies?title=Interstellar, you should get a `200 OK` and the movie back. Copy the `uuid` value.
+8. Using Postman and the previously copied `uuid` value, issue a GET request to http://127.0.0.1:5000/api/movies/replace-me-with-copied-uuid, you should get a `200 OK` and the movie back.
+9. Using Postman and the previously copied `uuid` value, issue a DELETE request to http://127.0.0.1:5000/api/movies/replace-me-with-copied-uuid, you should get a `204 NO CONTENT` and nothing back.
+10. Using Postman, issue a GET request to http://127.0.0.1:5000/api/movies/abcd, you should get a `404 NOT FOUND` back.
+11. Using Postman, issue a DELETE request to http://127.0.0.1:5000/api/movies/abcd, you should get a `404 NOT FOUND` back.
 12. Kill your server.
 
 ## Step 5: Submitting your work
