@@ -1,3 +1,4 @@
+import uuid
 from flask import *
 
 # create an instance of a Flask object.
@@ -19,6 +20,16 @@ def handle_movies() -> Response:
 
 @app.route("/api/movies/<mid>", methods=["GET", "DELETE"])
 def handle_movie(mid: str) -> Response:
+    pass
+
+
+@app.route("/api/movies/<mid>/reviews", methods=["GET", "POST"])
+def handle_reviews(mid: str) -> Response:
+    pass
+
+
+@app.route("/api/movies/<mid>/reviews/<rid>", methods=["GET", "DELETE"])
+def handle_review(mid: str, rid: str) -> Response:
     pass
 
 

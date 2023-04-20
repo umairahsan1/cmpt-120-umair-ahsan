@@ -439,3 +439,118 @@ Delete all of the code in your `test_main.py` file and copy everything in my ver
 1. Ensure your python environment is activated.
 2. Run `pytest`.
 3. Once all of your project's test cases are passing, copy the output and submit it on iLearn.
+
+# Assignment 4 - Finishing Touches
+
+Currently we can create new movie entries, get all movie entries, get a movie entry by id, and delete a movie entry. The final thing we want to be able to do is to allow the user to get, add, and delete reviews to/from movie objects.
+
+## Setup
+
+Create two new function called `handle_reviews` and `handle_review`.
+
+```py
+@app.route("/api/movies/<mid>/reviews", methods=["GET", "POST"])
+def handle_reviews(mid: str) -> Response:
+    if request.method == "GET":
+        # GET logic
+    elif request.method == "POST":
+        # POST logic
+
+
+@app.route("/api/movies/<mid>/reviews/<rid>", methods=["GET", "DELETE"])
+def handle_review(mid: str, rid: str) -> Response:
+    if request.method == "GET":
+        # GET logic
+    elif request.method == "DELETE":
+        # DELETE logic
+```
+
+In the `handle_reviews` function, I want you to be able to list all reviews of a given movie and add a new review. In the `handle_review` function I want you to be able to retrieve a single review and delete a single review from a movie.
+
+## The GET requests
+
+For the `handle_reviews` function, once you get the reviews property from the movie entry, return it back to the client like so:
+
+```py
+return jsonify(reviews)
+```
+
+Some edge cases I want you to look out for are the following:
+
+1. If no movie matches the `mid`; return a `Response("Not found", status=404)`
+
+For the `handle_review` function, once you get the specific review property from the movie entry, return it back to the client like so:
+
+```py
+return jsonify(review)
+```
+
+Some edge cases I want you to look out for are the following:
+
+1.  If no movie matches the `mid`; return a `Response("Not found", status=404)`
+2.  If no review matches the `rid`; return a `Response("Not found", status=404)`
+
+## The POST request
+
+For the POST request in `handle_reviews`, you need to retrieve the request body like you have done in previous POST request handling. This time you are expecting a request body to be a dictionary that has the following keys: `username` which maps to a string, `score` which maps to a float value between `0.0` and `10.0`, and `review` which maps to a string.
+
+1. First thing you will want to do is retrieve the request body.
+2. Validate the request body (request body contains the keys and the values are valid).
+3. Construct a new review object:
+   ```py
+   review = {
+       "uuid": uuid.uuid4(),
+       "username": request.get_json()["username"],
+       "score": request.get_json()["score"],
+       "review": request.get_json()["review"]
+   }
+   ```
+4. Append the review to the movie's reviews.
+5. Finally return a `Response("Created", status=201)`
+
+Some edge cases I want you to look out for are the following:
+
+1. If no movie matches the `mid`; return a `Response("Not found", status=404)`
+2. If the any of the expected keys aren't present in the request body; return a `Response("Bad request", status=400)`
+3. If the value of the `username` in the request body isn't a string; return a `Response("Bad request", status=400)`
+4. If the value of the `score` in the request body isn't a float between 0 and 10; return a `Response("Bad request", status=400)`
+5. If the value of the `review` in the request body isn't a string; return a `Response("Bad request", status=400)`
+
+## The DELETE request
+
+For the DELETE request in `handle_review`, you need to retrieve the specific review entry in a specific movie and then remove it from a movie entry's list of reviews. Once you have successfully removed the review from the movie, return a `Response("No content", status=204)`.
+
+Some edge cases I want you to look out for are the following:
+
+1. If no movie matches the `mid`; return a `Response("Not found", status=404)`
+2. If no review matches the `rid`; return a `Response("Not found", status=404)`
+
+## Testing your code
+
+Activating your python environment and running `pytest` will be the best indicator that your code is working as intended. However, if you want to get comfortable with issuing requests follow the steps below:
+
+1. Start your server
+2. Using Postman, issue a GET request to http://127.0.0.1:5000/api/movies, you should get a `200 OK` and an empty list in the response.
+3. Using Postman, issue a POST request to http://127.0.0.1:5000/api/movies with the following request body:
+   ```json
+   {
+     "title": "Interstellar"
+   }
+   ```
+   You should get a `201 CREATED`.
+4. Using Postman, issue a GET request to http://127.0.0.1:5000/api/movies?title=Interstellar, you should get a `200 OK` and the movie back. Copy the `uuid` value.
+5. Using Postman and the previously copied `uuid` value, issue a GET request to http://127.0.0.1:5000/api/movies/replace-me-with-copied-uuid, you should get a `200 OK` and the movie back.
+6. Using Postman and the previously copied `uuid` value, issue a POST request to http://127.0.0.1:5000/api/movies/replace-me-with-copied-uuid/reviews with the following request body:
+   ```json
+   {
+     "username": "johnsmith",
+     "score": 9.5,
+     "review": "Great movie!"
+   }
+   ```
+   You should get a 201 CREATED back.
+7. Using Postman, issue a GET request to http://127.0.0.1:5000/api/movies?title=Interstellar, you should get a `200 OK` and the movie back with the review back.
+
+## Submitting your code
+
+Run `pytest`; copy the output and submit it in the assignment on iLearn.
