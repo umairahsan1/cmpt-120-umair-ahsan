@@ -527,6 +527,8 @@ Some edge cases I want you to look out for are the following:
 
 ## Testing your code
 
+Delete all of the code in `test_main.py` and replace it with what is on my github.
+
 Activating your python environment and running `pytest` will be the best indicator that your code is working as intended. However, if you want to get comfortable with issuing requests follow the steps below:
 
 1. Start your server
